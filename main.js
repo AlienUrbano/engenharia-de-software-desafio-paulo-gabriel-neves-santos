@@ -1,3 +1,15 @@
+// Please,  make sure that modules are installed
+
+//note: node.js must to be installed!!
+
+// Use the following commands:
+
+
+//npm install
+//npm init -y
+//npm install googleapis@105 @google-cloud/local-auth@2.1.0 --save
+
+
 
 // imports needed modules
 
@@ -10,12 +22,12 @@ const {google} = require('googleapis')
 // Id to spreadsheet and range of document data
 
 const spreadsheetId = '1ceRUKCLu-O5C1U7FxhPBHFfRzyAzwG5OhjQhaSIteXw'
-const range = 'engenharia_de_software!B3:F27'
+const range = 'engenharia_de_software!A4:H27'
 
 
 // permisssion scope to acess the sheet
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 // credentials and token path
 
@@ -35,9 +47,13 @@ async function loadSavedCredentialsIfExist() {
   try {
     const content = await fs.readFile(TOKEN_PATH)
     const credentials = JSON.parse(content)
+    
+    console.log('////////////////////////////////////////////////')
+    console.log('loading credentials...')
+    console.log('////////////////////////////////////////////////')
+
     return google.auth.fromJSON(credentials)
 
-    console.log('loading credentials...')
 
   } catch (err) {
     return null
@@ -82,7 +98,6 @@ async function authorize() {
   if (client.credentials) {
     await saveCredentials(client)
   }
-  console.log('Authorized Client')
   return client;
 }
 
@@ -94,14 +109,16 @@ async function authorize() {
 //
 async function getStudents(auth) {
 
+    console.log('////////////////////////////////////////////////')
     console.log('Getting data...') 
+    console.log('////////////////////////////////////////////////')
 
     const sheets = google.sheets({version: 'v4', auth})
     const res = await sheets.spreadsheets.values.get({
 
     // Sheet ID and range of tables
     spreadsheetId: '1ceRUKCLu-O5C1U7FxhPBHFfRzyAzwG5OhjQhaSIteXw',
-    range: 'engenharia_de_software!A4:F27'
+    range: 'engenharia_de_software!A4:H27'
   });
 
   // If no data is found, return an console.log
@@ -113,7 +130,10 @@ async function getStudents(auth) {
 
   const updatedRows = []
 
+
+  console.log('////////////////////////////////////////////////')
   console.log('applying logic...')
+  console.log('////////////////////////////////////////////////')
 
 
   //  iterate each line
@@ -133,39 +153,41 @@ async function getStudents(auth) {
     //verifies if the student have to many absences and set the "Nota para aprovação final" to 0 
     if (absences > 0.25 * 60) {
       status = 'Reprovado por Falta'
-      row[5] = 0
+      row[6] = status
+      row[7] = 0
     } 
     
     //verifies if is a grade failure    
     else if (average < 50) {
       status = 'Reprovado por Nota'
-      row[5] = 0;
+      row[6] = status
+      row[7] = 0;
     } else if (average < 70) {
       
       // calculate the final exam minimum required grade
       const naf = Math.ceil(100 - average)
 
       status = 'Exame Final'
-      row[5] = naf
+      row[6] = status
+      row[7] = naf
     } 
     
     // Else, is a grade sucess 
 
     else {
       status = 'Aprovado'
-      row[5] = 0
+      row[6] = status
+      row[7] = 0
     }
 
-
     //inject the status in the excel table
-    row.push(status)
     updatedRows.push(row)
 
-    console.log(`${studentName}: ${status}`)
   })
 
-  
+  console.log('////////////////////////////////////////////////')
   console.log('updating excel table...')
+  console.log('////////////////////////////////////////////////')
   // update the excel table
 
   await sheets.spreadsheets.values.update({
@@ -175,7 +197,10 @@ async function getStudents(auth) {
     resource: { values: updatedRows },
   });
 
+  console.log('////////////////////////////////////////////////')
   console.log('Results updated, take a look in the spreadsheet.')
+  console.log('////////////////////////////////////////////////')
+
 }
 
 authorize().then(getStudents).catch(console.error);
