@@ -11,8 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/local-auth": "^2.1.0",
-    "googleapis": "^105.0.0",
-    "uuid": "^9.0.1"
-  },
-  "devDependencies": {}
+    "excel4node": "^1.8.2",
+    "googleapis": "^105.0.0"
+  }
 }
