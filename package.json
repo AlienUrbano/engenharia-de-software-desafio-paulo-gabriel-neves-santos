@@ -1,7 +1,7 @@
 {
   "name": "engenharia-de-software-desafio-paulo-gabriel-neves-santos",
   "version": "1.0.0",
-  "description": "code challenge to tunts rocks internship",
+  "description": "code challenge to Tunts.Rocks internship",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
