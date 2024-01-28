@@ -17,6 +17,7 @@ Download [here](https://nodejs.org/en/download/current)
 Then run the following commands in the terminal:
 
 (make sure to be in the app directory)
+
 1.
 ```
 npm install
