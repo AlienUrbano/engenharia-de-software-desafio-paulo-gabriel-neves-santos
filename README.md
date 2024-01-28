@@ -17,28 +17,28 @@ Download [here](https://nodejs.org/en/download/current)
 Then run the following commands in the terminal:
 
 (make sure to be in the app directory)
-
+1.
 ```
-1. npm install
+npm install
 ```
-
+2.
 ```
-2. npm init -y
+npm init -y
 ```
-
+3.
 ```
-3. npm install googleapis@105 @google-cloud/local-auth@2.1.0 --save
+npm install googleapis@105 @google-cloud/local-auth@2.1.0 --save
 ```
 
 You can run the app with the following command: 
-
+4.
 ```
-4. node . 
+node . 
 ```
 or 
 
 ```
-4. node main.js 
+node main.js 
 ```
 
 ## References 
