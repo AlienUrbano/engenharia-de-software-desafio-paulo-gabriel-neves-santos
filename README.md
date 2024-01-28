@@ -30,7 +30,8 @@ npm init -y
 npm install googleapis@105 @google-cloud/local-auth@2.1.0 --save
 ```
 
-You can run the app with the following command: 
+You can run the app with the following command:
+
 4.
 ```
 node . 
